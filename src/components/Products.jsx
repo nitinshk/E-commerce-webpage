@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
-
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -12,7 +10,7 @@ const Products = () => {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState(data);
   const [loading, setLoading] = useState(false);
-  let componentMounted = true;
+  const componentMounted = useRef(true); // Changed from let to useRef
 
   const dispatch = useDispatch();
 
@@ -24,18 +22,18 @@ const Products = () => {
     const getProducts = async () => {
       setLoading(true);
       const response = await fetch("https://fakestoreapi.com/products/");
-      if (componentMounted) {
+      if (componentMounted.current) {
         setData(await response.clone().json());
         setFilter(await response.json());
         setLoading(false);
       }
-
-      return () => {
-        componentMounted.current = false;
-      };
     };
 
     getProducts();
+
+    return () => {
+      componentMounted.current = false;
+    };
   }, []);
 
   const Loading = () => {
@@ -44,24 +42,11 @@ const Products = () => {
         <div className="col-12 py-5 text-center">
           <Skeleton height={40} width={560} />
         </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
-          <Skeleton height={592} />
-        </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
-          <Skeleton height={592} />
-        </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
-          <Skeleton height={592} />
-        </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
-          <Skeleton height={592} />
-        </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
-          <Skeleton height={592} />
-        </div>
-        <div className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
-          <Skeleton height={592} />
-        </div>
+        {[...Array(6)].map((_, index) => (
+          <div key={index} className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
+            <Skeleton height={592} />
+          </div>
+        ))}
       </>
     );
   };
@@ -114,7 +99,7 @@ const Products = () => {
               key={product.id}
               className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4"
             >
-              <div className="card text-center h-100" key={product.id}>
+              <div className="card text-center h-100">
                 <img
                   className="card-img-top p-3"
                   src={product.image}
@@ -131,8 +116,6 @@ const Products = () => {
                 </div>
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item lead">$ {product.price}</li>
-                  {/* <li className="list-group-item">Dapibus ac facilisis in</li>
-                    <li className="list-group-item">Vestibulum at eros</li> */}
                 </ul>
                 <div className="card-body">
                   <Link
@@ -158,6 +141,7 @@ const Products = () => {
       </>
     );
   };
+
   return (
     <>
       <div className="container my-3 py-3">
