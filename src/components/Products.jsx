@@ -31,7 +31,7 @@ const Products = () => {
       }
 
       return () => {
-        componentMounted = false;
+        componentMounted.current = false;
       };
     };
 
