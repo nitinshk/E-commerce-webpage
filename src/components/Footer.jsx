@@ -11,14 +11,14 @@ const Footer = () => {
               
             </p>
             
-            <a className="text-dark fs-4" href="" target="_blank" rel="noreferrer">
+           
             <img
                 src="crested_web_creators_without_bg.png" // Replace this with the actual path of your image
                 alt="GitHub Logo" 
                 style={{ width: "230px", height: "230px", marginRight: "px" }} // Optional: Adjust the size and margin as needed
              />
               
-            </a>
+      
           </div>
         </div>
       </footer>
