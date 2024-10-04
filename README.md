@@ -15,8 +15,7 @@ https://reactjs-ecommerce-app.vercel.app/
 
 ## Screenshots
 
-![App Screenshot](https://ibb.co/4gsBmGV)
-
+https://ibb.co/4gsBmGV
 
 
 
